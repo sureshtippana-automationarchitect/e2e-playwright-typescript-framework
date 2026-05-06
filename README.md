@@ -18,14 +18,51 @@ A scalable and maintainable end-to-end (E2E) test automation framework built usi
 
 📂 Project Structure
 
-├── tests/ # Test specs
-├── pages/ # Page Object classes
-├── utils/ # Helper methods & reusable functions
-├── test-data/ # JSON test data
-├── api/ # API test methods (GET, POST, etc.)
-├── config/ # Environment configs
-├── playwright.config.ts # Playwright configuration
-├── package.json
+```
+e2e-playwright-typescript-framework/
+│
+├── config/                           # Environment configuration
+│   ├── environments/
+│   │   ├── dev.env.ts               # Development environment config
+│   │   ├── uat.env.ts               # UAT environment config
+│   │   └── prod.env.ts              # Production environment config
+│   ├── environmentManager.ts        # Environment manager class
+│   └── types.ts                     # TypeScript type definitions
+│
+├── helpers/                          # Reusable helper methods
+│   ├── apiLogger.ts                 # API logging utilities
+│   ├── env.ts                       # Environment helper functions
+│   ├── globalSetup.ts               # Global test setup
+│   ├── helperMethodsUI.ts           # UI interaction helpers
+│   └── pageObjects.ts               # Page object helper functions
+│
+├── pages/                            # Page Object Model classes
+│   └── loginPage.ts                 # Login page object
+│
+├── test-data/                        # Test data files
+│   └── login.json                   # Login test data
+│
+├── test-results/                     # Test execution results
+│   └── last-run.json                # Last test run metadata
+│
+├── tests/                            # Test specification files
+│   └── login.spec.ts                # Login test scenarios
+│
+├── utils/                            # Utility functions
+│   └── logger.ts                    # Custom logger utility
+│
+├── playwright-report/                # Generated test reports
+│
+├── node_modules/                     # Node.js dependencies
+│
+├── .env.example                      # Example environment variables
+├── .gitignore                        # Git ignore configuration
+├── package.json                      # NPM dependencies and scripts
+├── package-lock.json                 # Locked dependency versions
+├── playwright.config.ts              # Playwright configuration
+├── tsconfig.json                     # TypeScript configuration
+└── README.md                         # Project documentation
+```
 
 ⚙️ Setup Instructions
 
