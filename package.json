@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "login:dev": "cross-env test_env=dev npx playwright test --headed tests/login.spec.ts --project=chromium"
+    "login": "npx playwright test tests/login.spec.ts",
+    "login:dev": "cross-env test_env=dev npx playwright test --headed tests/login.spec.ts --project=chromium",
+    "login:headed": "npx playwright test --headed tests/login.spec.ts",
+    "login:debug": "npx playwright test --debug tests/login.spec.ts",
+    "dashboard": "npx playwright test tests/dashboard.spec.ts",
+    "dashboard:dev": "cross-env test_env=dev npx playwright test --headed tests/dashboard.spec.ts --project=chromium",
+    "dashboard:headed": "npx playwright test --headed tests/dashboard.spec.ts",
+    "dashboard:debug": "npx playwright test --debug tests/dashboard.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -22,14 +29,15 @@
   "devDependencies": {
     "@playwright/test": "^1.59.1",
     "@types/node": "^25.6.0",
+    "axe-playwright": "^2.2.2",
     "cross-env": "^7.0.3",
     "dotenv": "^17.2.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3",
-    "axe-playwright": "^2.2.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@fission-ai/openspec": "^1.0.2",
+    "openspec-playwright": "^0.3.24",
     "xlsx": "^0.18.5"
   }
 }
