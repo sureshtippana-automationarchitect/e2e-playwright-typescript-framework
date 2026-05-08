@@ -1,0 +1,41 @@
+{
+  "transactions": [
+    {
+      "testId": "TC01",
+      "transactionType": "Deposit",
+      "fromAccount": "Primary Savings - $5,000.00",
+      "amount": "2500",
+      "description": "Salary deposit for May 2026",
+      "expectedBalanceAfter": "$7,500.00",
+      "sendEmailNotification": true
+    },
+    {
+      "testId": "TC02",
+      "transactionType": "Withdrawal",
+      "fromAccount": "Primary Savings - $5,000.00",
+      "amount": "1000",
+      "description": "ATM withdrawal for monthly expenses",
+      "expectedBalanceAfter": "$4,000.00",
+      "sendEmailNotification": true
+    },
+    {
+      "testId": "TC03",
+      "transactionType": "Withdrawal",
+      "fromAccount": "Checking Account - $2,500.00",
+      "amount": "500",
+      "description": "Bill payment withdrawal",
+      "expectedBalanceAfter": "$2,000.00",
+      "sendEmailNotification": false
+    }
+  ],
+  "negativeTests": {
+    "invalidAmount": {
+      "testId": "TC04",
+      "transactionType": "Withdrawal",
+      "fromAccount": "Primary Savings - $5,000.00",
+      "amount": "10000",
+      "description": "Exceeding available balance",
+      "expectedError": "Insufficient funds"
+    }
+  }
+}
