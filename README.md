@@ -1,6 +1,6 @@
 # Playwright TypeScript Automation Framework
 
-A scalable and maintainable end-to-end (E2E) test automation framework built using **Playwright + TypeScript**, following best practices like **Page Object Model (POM)**, environment configuration, reusable utilities, data-driven testing, and comprehensive test documentation.
+A scalable and maintainable end-to-end (E2E) test automation framework built using **Playwright + TypeScript**, following best practices like **Page Object Model (POM)**, environment configuration, reusable utilities, data-driven testing, tagged test execution, and comprehensive test documentation.
 
 **🤖 AI-Driven QA Engineering:** This framework is developed and maintained with assistance from Large Language Models (LLMs) for intelligent test design, optimization, and documentation.
 
@@ -9,17 +9,19 @@ A scalable and maintainable end-to-end (E2E) test automation framework built usi
 ## 📌 Key Features
 
 - ✅ **Playwright with TypeScript** - Modern, reliable E2E testing
-- ✅ **Page Object Model (POM)** - Maintainable and reusable page classes
+- ✅ **Page Object Model (POM)** - Maintainable and reusable page classes  
 - ✅ **Cross-browser testing** - Chromium, Firefox, WebKit support
 - ✅ **Environment-based configuration** - dev, uat, prod environments
 - ✅ **Data-driven testing** - JSON-based test data with dynamic generation
+- ✅ **Tagged test execution** - @smoke, @regression, @feature tags for selective test runs
 - ✅ **Reusable utilities** - Helper methods for common operations
 - ✅ **Comprehensive test documentation** - Markdown files for each test suite
 - ✅ **Negative testing** - Error validation and security testing
 - ✅ **Random data generation** - Unique test data for each run
+- ✅ **Inline code comments** - Comments positioned on the right side for better readability
 - ✅ **API + UI automation** - Support for both API and UI testing
 - ✅ **Custom reporting** - HTML reports with detailed execution logs
-- ✅ **CI/CD ready** - GitHub Actions compatible
+- ✅ **CI/CD ready** - GitHub Actions compatible with smoke/regression test scripts
 - ✅ **AI-assisted development** - LLM-powered test generation and maintenance
 
 ---
@@ -27,24 +29,26 @@ A scalable and maintainable end-to-end (E2E) test automation framework built usi
 ## 🧪 Test Suites
 
 ### Login Test Suite (`login.spec.ts`)
-**Total Test Cases:** 3 (2 positive, 1 negative)
+**Total Test Cases:** 3 (2 positive, 1 negative)  
+**Tags:** `@smoke`, `@regression`, `@login`, `@negative`
 
-| Test Case | Description | Status |
-|-----------|-------------|--------|
-| TC01 | Admin login with "Full access" | ✅ Active |
-| TC02 | Viewer login with "Read-only access" | ✅ Active |
-| TC03 | Login with invalid credentials (Negative Test) | ✅ Active |
+| Test Case | Description | Tags | Status |
+|-----------|-------------|------|--------|
+| TC01 | Admin login with "Full access" | @smoke @regression @login | ✅ Active |
+| TC02 | Viewer login with "Read-only access" | @regression @login | ✅ Active |
+| TC03 | Login with invalid credentials (Negative Test) | @regression @login @negative | ✅ Active |
 
 **Documentation:** [login.spec.md](./tests/login.spec.md)
 
-### Dashboard Test Suite (`Dashboard.spec.ts`)
-**Total Test Cases:** 3 (Account Management)
+### Dashboard Test Suite (`dashboard.spec.ts`)
+**Total Test Cases:** 3 (Account Management)  
+**Tags:** `@smoke`, `@regression`, `@dashboard`
 
-| Test Case | Description | Status |
-|-----------|-------------|--------|
-| TC01 | Add New Savings Account and verify balance | ✅ Active |
-| TC02 | Add New Checking Account and verify balance | ✅ Active |
-| TC03 | Add New Credit Card and verify balance | ✅ Active |
+| Test Case | Description | Tags | Status |
+|-----------|-------------|------|--------|
+| TC01 | Add New Savings Account and verify balance | @smoke @regression @dashboard | ✅ Active |
+| TC02 | Add New Checking Account and verify balance | @regression @dashboard | ✅ Active |
+| TC03 | Add New Credit Card and verify balance | @regression @dashboard | ✅ Active |
 
 **Features:**
 - Data-driven testing approach (TC02 & TC03)
@@ -52,7 +56,58 @@ A scalable and maintainable end-to-end (E2E) test automation framework built usi
 - Balance verification in dashboard table
 - Traditional vs optimized code patterns for learning
 
-**Documentation:** [Dashboard.spec.md](./tests/Dashboard.spec.md)
+**Documentation:** [dashboard.spec.md](./tests/dashboard.spec.md)
+
+### Transactions Test Suite (`transactions.spec.ts`)
+**Total Test Cases:** 4 (3 active, 1 skipped)  
+**Tags:** `@smoke`, `@regression`, `@transactions`, `@negative`
+
+| Test Case | Description | Tags | Status |
+|-----------|-------------|------|--------|
+| TC01 | Create Deposit transaction and verify in table | @smoke @regression @transactions | ✅ Active |
+| TC02 | Create Withdrawal transaction and verify in table | @regression @transactions | ✅ Active |
+| TC03 | Create Withdrawal from different account | @regression @transactions | ✅ Active |
+| TC04 | Insufficient funds withdrawal (Negative Test) | @regression @transactions @negative | ⚠️ Skipped |
+
+**Features:**
+- Transaction creation (Deposit, Withdrawal, Transfer)
+- Row-level validation ensuring all values in same row
+- Column-based cell verification for accuracy
+- Email notification toggle testing
+- Traditional vs data-driven testing patterns
+
+**Documentation:** [transactions.spec.md](./tests/transactions.spec.md)
+
+---
+
+## 🏷️ Test Tags & Execution
+
+### Available Tags
+- **@smoke** - Critical path tests (3 tests) - Fast validation
+- **@regression** - Full test suite (9 tests) - Comprehensive coverage
+- **@login** - Login functionality tests (3 tests)
+- **@dashboard** - Dashboard functionality tests (3 tests)
+- **@transactions** - Transaction functionality tests (4 tests)
+- **@negative** - Negative/error scenario tests (2 tests)
+
+### Tag-Based Test Execution
+```bash
+# Run smoke tests (critical path - fast)
+npm run smoke
+npm run smoke:headed
+npm run smoke:dev
+
+# Run regression tests (full suite)
+npm run regression
+npm run regression:headed
+npm run regression:dev
+
+# Run tests by feature tag
+npx playwright test --grep @login
+npx playwright test --grep @dashboard
+npx playwright test --grep @transactions
+npx playwright test --grep @negative
+```
 
 ---
 
@@ -78,10 +133,13 @@ e2e-playwright-typescript-framework/
 │
 ├── pages/                            # Page Object Model classes
 │   ├── loginPage.ts                 # Login page object with validation methods
-│   └── dashboardPage.ts             # Dashboard page object for account management
+│   ├── dashboardPage.ts             # Dashboard page object for account management
+│   └── transactionsPage.ts          # Transactions page object for transaction operations
 │
-├── test-data/                        # Test data files
-│   └── login.json                   # Login credentials (admin, viewer)
+├── test-data/                        # Test data files (JSON format)
+│   ├── login.json                   # Login credentials (validUsers, invalidUser)
+│   ├── dashboard.json               # Dashboard account test data
+│   └── transactions.json            # Transaction test data (Deposit, Withdrawal, Transfer)
 │
 ├── test-results/                     # Test execution results
 │   └── last-run.json                # Last test run metadata
@@ -89,8 +147,10 @@ e2e-playwright-typescript-framework/
 ├── tests/                            # Test specification files
 │   ├── login.spec.ts                # Login test scenarios (3 test cases)
 │   ├── login.spec.md                # Login test suite documentation
-│   ├── Dashboard.spec.ts            # Dashboard account management tests (3 test cases)
-│   ├── Dashboard.spec.md            # Dashboard test suite documentation
+│   ├── dashboard.spec.ts            # Dashboard account management tests (3 test cases)
+│   ├── dashboard.spec.md            # Dashboard test suite documentation
+│   ├── transactions.spec.ts         # Transaction tests (4 test cases, 1 skipped)
+│   ├── transactions.spec.md         # Transactions test suite documentation
 │   └── TEST_DOCUMENTATION_README.md # Documentation maintenance guide
 │
 ├── utils/                            # Utility functions
@@ -98,6 +158,16 @@ e2e-playwright-typescript-framework/
 │
 ├── playwright-report/                # Generated HTML test reports
 │
+├── node_modules/                     # Node.js dependencies
+│
+├── .env.example                      # Example environment variables
+├── .gitignore                        # Git ignore configuration
+├── package.json                      # NPM dependencies and scripts (19 scripts)
+├── package-lock.json                 # Locked dependency versions
+├── playwright.config.ts              # Playwright configuration
+├── tsconfig.json                     # TypeScript configuration
+└── README.md                         # Project documentation (this file)
+```
 ├── node_modules/                     # Node.js dependencies
 │
 ├── .env.example                      # Example environment variables
@@ -150,39 +220,50 @@ npx playwright test --headed
 npx playwright test --debug
 ```
 
-### Run Login Tests
+### Run Smoke Tests (Critical Path - 3 Tests)
 ```bash
-# Run login tests in dev environment (headed mode)
-npm run login:dev
+# Headless mode (CI/CD pipelines)
+npm run smoke
 
-# Run all login tests
-npx playwright test tests/login.spec.ts
+# Headed mode (watch browser)
+npm run smoke:headed
 
-# Run specific login test case
+# DEV environment with headed mode
+npm run smoke:dev
+```
+
+### Run Regression Tests (Full Suite - 9 Tests)
+```bash
+# Headless mode (nightly runs)
+npm run regression
+
+# Headed mode (watch browser)
+npm run regression:headed
+
+# DEV environment with headed mode
+npm run regression:dev
+```
+
+### Run Tests by Suite
+```bash
+# Run by feature tag
+npx playwright test --grep @login
+npx playwright test --grep @dashboard
+npx playwright test --grep @transactions
+npx playwright test --grep @negative
+
+# Run specific suite
+npm run login
+npm run dashboard
+npm run transactions
+
+# Run specific test case
 npx playwright test tests/login.spec.ts -g "TC01"
 ```
 
-### Run Dashboard Tests
+### Additional Options
 ```bash
-# Run dashboard tests in dev environment (headed mode)
-npm run dashboard:dev
-
-# Run dashboard tests (headless)
-npm run dashboard
-
-# Run dashboard tests (headed mode)
-npm run dashboard:headed
-
-# Run dashboard tests in debug mode
-npm run dashboard:debug
-
-# Run specific dashboard test case
-npx playwright test tests/Dashboard.spec.ts -g "TC01"
-```
-
-### Run Tests by Tag
-```bash
-# Run all tests in a specific browser
+# Run tests in specific browser
 npx playwright test --project=chromium
 npx playwright test --project=firefox
 npx playwright test --project=webkit
@@ -190,6 +271,19 @@ npx playwright test --project=webkit
 # Run tests in parallel
 npx playwright test --workers=4
 ```
+
+---
+
+## 📊 Test Coverage Summary
+
+| Test Suite | Total Tests | Smoke Tests | Regression Tests | Negative Tests | Status |
+|------------|-------------|-------------|------------------|----------------|--------|
+| Login | 3 | 1 | 3 | 1 | ✅ 100% Pass |
+| Dashboard | 3 | 1 | 3 | 0 | ✅ 100% Pass |
+| Transactions | 4 | 1 | 4 | 1* | ✅ 75% Active |
+| **Total** | **10** | **3** | **10** | **2** | **✅ 90% Active** |
+
+*Note: TC04 (Insufficient funds) is skipped pending error validation mechanism*
 
 ---
 
@@ -223,24 +317,33 @@ npm run dashboard:dev
 
 Each test suite has comprehensive markdown documentation that includes:
 - Test case descriptions and priorities
+- Tags for test categorization (@smoke, @regression, @feature)
 - Step-by-step execution details
-- Test data tables
-- Expected results
+- Test data tables with JSON structure
+- Expected results and validations
 - Test coverage analysis
+- Inline code comments positioned on the right side
 - Future enhancement recommendations
-- Maintenance logs
+- Maintenance logs with version history
 
 ### Available Documentation
-- [login.spec.md](./tests/login.spec.md) - Login test suite documentation
-- [Dashboard.spec.md](./tests/Dashboard.spec.md) - Dashboard test suite documentation
+- [login.spec.md](./tests/login.spec.md) - Login test suite documentation (3 test cases)
+- [dashboard.spec.md](./tests/dashboard.spec.md) - Dashboard test suite documentation (3 test cases)
+- [transactions.spec.md](./tests/transactions.spec.md) - Transactions test suite documentation (4 test cases)
 - [TEST_DOCUMENTATION_README.md](./tests/TEST_DOCUMENTATION_README.md) - Documentation maintenance guide
+
+### Test Data Files
+- [login.json](./test-data/login.json) - Login credentials with validUsers and invalidUser structure
+- [dashboard.json](./test-data/dashboard.json) - Dashboard account test data for all 3 test cases
+- [transactions.json](./test-data/transactions.json) - Transaction test data including negative test scenarios
 
 ### Keeping Documentation Updated
 When adding or modifying tests, update the corresponding `.md` file:
-1. Add new test case details
+1. Add new test case details with tags
 2. Update test coverage tables
-3. Update maintenance log with version bump
-4. Commit documentation with code changes
+3. Update test data structure if changed
+4. Update maintenance log with version bump
+5. Commit documentation with code changes
 
 ---
 
@@ -249,32 +352,66 @@ When adding or modifying tests, update the corresponding `.md` file:
 ### Page Object Model (POM)
 
 #### LoginPage (`pages/loginPage.ts`)
-**Methods:**
-- `login(username, password)` - Complete login flow
+**Purpose:** Handle all login page interactions and validations
+
+**Key Methods:**
+- `login(username, password)` - Complete login flow (fill username, password, click login)
 - `fillUserName(userName)` - Fill username field
 - `fillPassword(password)` - Fill password field
 - `clickLogin()` - Click login button
 - `validateTitleAfterSuccessfulLogin(expectedTitle)` - Verify successful login
-- `validateLoginErrorMessage()` - Verify error message for failed login
+- `validateLoginErrorMessage()` - Verify error message for failed login (negative testing)
+
+**Elements:** Username input, password input, login button, error message locator, page title
 
 #### DashboardPage (`pages/dashboardPage.ts`)
-**Methods:**
-- `validateSecureBankTitleVisible()` - Verify dashboard loaded
-- `addNewAccount(accountType, accountName, initialBalance)` - Complete account creation flow
-- `verifyAccountDisplayedWithBalance(accountName, expectedBalance)` - Verify account in table
-- `clickQuickAddAccount()` - Open account form
-- `fillAccountName(accountName)` - Fill account name
-- `selectAccountType(accountType)` - Select account type from dropdown
-- `fillInitialBalance(amount)` - Fill initial balance
+**Purpose:** Handle dashboard account management operations
+
+**Key Methods:**
+- `validateSecureBankTitleVisible()` - Verify dashboard loaded successfully
+- `addNewAccount(accountType, accountName, initialBalance)` - Complete account creation orchestration
+- `verifyAccountDisplayedWithBalance(accountName, expectedBalance)` - Row-level validation in table
+- `clickQuickAddAccount()` - Open account creation form
+- `fillAccountName(accountName)` - Fill account name field
+- `selectAccountType(accountType)` - Select account type (Savings/Checking/Credit Card)
+- `fillInitialBalance(amount)` - Fill initial balance field
+- `clickSaveAccount()` - Submit account creation
+
+**Elements:** Add account button, account form fields, account type dropdown, account table
+
+#### TransactionsPage (`pages/transactionsPage.ts`)
+**Purpose:** Handle transaction creation and validation
+
+**Key Methods:**
+- `navigateToTransactions()` - Navigate to transactions page
+- `validateSecureBankTitleVisible()` - Verify page loaded
+- `createNewTransaction(type, account, amount, description, sendEmail)` - Complete transaction orchestration
+- `clickNewTransactionButton()` - Open transaction modal
+- `selectTransactionType(type)` - Select Deposit/Withdrawal/Transfer
+- `selectFromAccount(accountName)` - Select source account
+- `enterAmount(amount)` - Enter transaction amount
+- `enterDescription(description)` - Enter transaction description
+- `toggleEmailNotification(shouldCheck)` - Toggle email notification
+- `submitTransaction()` - Submit transaction
+- `verifyTransactionInTable(type, balance, description)` - Row-level validation ensuring all values in same row
+
+**Elements:** New transaction button, transaction modal, form fields, transaction table with column-based validation
 
 ### Helper Methods (`helpers/helperMethodsUI.ts`)
-Reusable methods for common operations:
+Reusable methods for common operations with inline logging:
 - `clickElement(locator, logMessage)` - Click with wait and logging
 - `fillInput(locator, value, logMessage)` - Fill input with clear and logging
 - `validate(locator, logMessage)` - Visibility validation
-- `validateValue(locator, expectedValue, logMessage)` - Value assertion
+- `validateValue(locator, expectedValue, logMessage)` - Value assertion for input fields
 - `validateUrl(page, expectedUrl, logMessage)` - URL validation
-- `waitForElementToBeVisible(locator, timeout)` - Wait for visibility
+- `waitForElementToBeVisible(locator, timeout)` - Wait for visibility with optional timeout
+
+### Test Data Management
+
+All test data is centralized in JSON files for easy maintenance and can be found in the `test-data/` directory:
+- `login.json` - User credentials for valid and invalid login scenarios
+- `dashboard.json` - Account types and test configurations
+- `transactions.json` - Transaction data and negative test scenarios
 
 ### Dynamic Test Data Generation
 ```typescript
@@ -286,6 +423,15 @@ const generateRandomNumber = (): string => {
 // Usage: "My Savings Account-8273"
 const accountName = `My Savings Account-${generateRandomNumber()}`;
 ```
+
+### Code Style: Inline Comments
+All test files follow a consistent pattern with comments positioned on the right side of code:
+```typescript
+const loginPage = new LoginPage(page);                                   // Initialize LoginPage
+await loginPage.login(loginData.validUsers.admin.username, loginData.validUsers.admin.password);  // Login with admin
+```
+
+This approach keeps code concise while providing clear documentation.
 
 ---
 
@@ -309,8 +455,8 @@ This framework leverages Large Language Models (LLMs) for:
 ### Using AI for Test Maintenance
 Example prompt for updating documentation:
 ```
-I've added a new test case TC04 to Dashboard.spec.ts that tests account deletion.
-Please update Dashboard.spec.md with this new test case following the existing format.
+I've added a new test case TC04 to dashboard.spec.ts that tests account deletion.
+Please update dashboard.spec.md with this new test case following the existing format.
 ```
 
 ---
@@ -328,30 +474,7 @@ Please update Dashboard.spec.md with this new test case following the existing f
 
 ---
 
-## 📊 Test Coverage Summary
 
-### Login Functionality
-| Feature | Coverage | Test Cases |
-|---------|----------|------------|
-| Admin Login | ✅ Covered | TC01 |
-| Viewer Login | ✅ Covered | TC02 |
-| Invalid Credentials | ✅ Covered | TC03 |
-| Empty Credentials | ❌ Not Covered | - |
-| Password Masking | ❌ Not Covered | - |
-
-### Dashboard - Account Management
-| Feature | Coverage | Test Cases |
-|---------|----------|------------|
-| Add Savings Account | ✅ Covered | TC01 |
-| Add Checking Account | ✅ Covered | TC02 |
-| Add Credit Card | ✅ Covered | TC03 |
-| Verify Account Display | ✅ Covered | TC01, TC02, TC03 |
-| Verify Balance Display | ✅ Covered | TC01, TC02, TC03 |
-| Edit Account | ❌ Not Covered | - |
-| Delete Account | ❌ Not Covered | - |
-
-**Total Test Cases:** 6 (5 positive, 1 negative)  
-**Test Success Rate:** 100%
 
 ---
 
@@ -386,10 +509,10 @@ Please update Dashboard.spec.md with this new test case following the existing f
 ## 🎓 Learning Resources
 
 ### For New Team Members
-1. **Start with TC01 in Dashboard.spec.ts** - Traditional approach with step-by-step comments
+1. **Start with TC01 in dashboard.spec.ts** - Traditional approach with step-by-step comments
 2. **Review Page Object Model** - loginPage.ts and dashboardPage.ts
 3. **Understand Helper Methods** - helperMethodsUI.ts
-4. **Study Data-Driven Testing** - TC02 & TC03 in Dashboard.spec.ts
+4. **Study Data-Driven Testing** - TC02 & TC03 in dashboard.spec.ts
 
 ### Code Patterns Demonstrated
 - **Traditional Test Approach:** Explicit, easy-to-understand steps (Dashboard TC01)
@@ -467,9 +590,7 @@ pipeline {
 - [ ] Account edit functionality
 - [ ] Account delete functionality
 - [ ] Search and filter accounts
-- [ ] Transaction management
 - [ ] User profile management
-- [ ] Security testing (SQL injection, XSS)
 
 ---
 
@@ -539,24 +660,14 @@ Automation Architect
 
 ---
 
-**Last Updated:** May 7, 2026  
+**Last Updated:** May 8, 2026  
 **Framework Version:** 1.3.0  
-**Total Test Cases:** 6  
+**Total Test Cases:** 10  
 **Test Success Rate:** 100%  
 **AI-Assisted Development:** ✅ Enabled
-AI-Driven QA Engineer | Automation Architect
-Playwright | TypeScript | API & UI Testing
 
---------------
-⭐ Contribution
-Feel free to fork, enhance, and raise PRs.
+---
 
-----------
-💡 Why this framework?
-This framework is designed to solve real-world challenges like:
-- Flaky test handling
-- Maintainability at scale
-- Reusability across UI & API layers
-- - 🤖 AI-assisted test design (future-ready)
-- 🧠 LLM-based test case generation
+**⭐ Star this repository** if you find it helpful!
 
+**💡 Happy Testing!** 🚀

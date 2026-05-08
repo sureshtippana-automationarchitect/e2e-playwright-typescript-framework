@@ -1,0 +1,25 @@
+{
+  "accounts": [
+    {
+      "testId": "TC01",
+      "accountType": "Savings Account",
+      "accountPrefix": "My Savings Account",
+      "initialBalance": "4999.99",
+      "description": "Traditional approach test case for learning purposes"
+    },
+    {
+      "testId": "TC02",
+      "accountType": "Checking Account",
+      "accountPrefix": "My Checking Account",
+      "initialBalance": "3500.00",
+      "description": "Data-driven approach test case"
+    },
+    {
+      "testId": "TC03",
+      "accountType": "Credit Card",
+      "accountPrefix": "My Credit Card",
+      "initialBalance": "5000.00",
+      "description": "Data-driven approach test case"
+    }
+  ]
+}

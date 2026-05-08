@@ -1,4 +1,21 @@
 ﻿{
-  "username": "admin",
-  "password": "admin123"
+  "validUsers": {
+    "admin": {
+      "username": "admin",
+      "password": "admin123",
+      "accessLevel": "Full access",
+      "expectedTitle": "SecureBank"
+    },
+    "viewer": {
+      "username": "viewer",
+      "password": "viewer123",
+      "accessLevel": "Read-only access",
+      "expectedTitle": "SecureBank"
+    }
+  },
+  "invalidUser": {
+    "username": "invaliduser",
+    "password": "invalidpassword",
+    "expectedErrorMessage": "⚠️ Invalid username or password. Please try again."
+  }
 }

@@ -1,30 +1,26 @@
-import { test } from '@playwright/test';
-import { EnvironmentManager, getBankURL } from '../config/environmentManager';
-import loginData from '../test-data/login.json';
-import LoginPage from '../pages/loginPage';
+import { test } from '@playwright/test';                                       // Playwright testing framework
+import { EnvironmentManager, getBankURL } from '../config/environmentManager';  // Environment configuration utilities
+import loginData from '../test-data/login.json';                                 // Login credentials test data
+import LoginPage from '../pages/loginPage';                                      // Page Object Model - Login page
 
-const envManager = EnvironmentManager.getInstance();
+const envManager = EnvironmentManager.getInstance();                             // Environment manager instance (dev, uat, prod)
 
 test.describe("Launch URL and verify the home page", () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(getBankURL());
-        await page.waitForLoadState('networkidle');
+        await page.goto(getBankURL());              // Navigate to the bank application URL
+        await page.waitForLoadState('networkidle'); // Wait until all network requests complete
     });
 
-    test('TC01 - admin login with "Full access"', async ({ page }) => {
-        // Initialize the LoginPage class and perform login
-        const loginPage = new LoginPage(page);
-        await loginPage.login(loginData.username, loginData.password);
-        // Validate that the page title is correct after successful login
-        await loginPage.validateTitleAfterSuccessfulLogin('SecureBank');
+    test('TC01 - admin login with "Full access" @smoke @regression @login', async ({ page }) => {
+        const loginPage = new LoginPage(page);                                                                          // Initialize LoginPage
+        await loginPage.login(loginData.validUsers.admin.username, loginData.validUsers.admin.password);               // Login with admin credentials
+        await loginPage.validateTitleAfterSuccessfulLogin(loginData.validUsers.admin.expectedTitle);                   // Validate page title after successful login
     });
 
-    test('TC02 - viewer login with "Read-only access"', async ({ page }) => {
-        // Initialize the LoginPage class and perform login with viewer credentials
-        const loginPage = new LoginPage(page);
-        await loginPage.login('viewer', 'viewer123');
-        // Validate that the page title is correct after successful login
-        await loginPage.validateTitleAfterSuccessfulLogin('SecureBank');
+    test('TC02 - viewer login with "Read-only access" @regression @login', async ({ page }) => {
+        const loginPage = new LoginPage(page);                                                                          // Initialize LoginPage
+        await loginPage.login(loginData.validUsers.viewer.username, loginData.validUsers.viewer.password);             // Login with viewer credentials
+        await loginPage.validateTitleAfterSuccessfulLogin(loginData.validUsers.viewer.expectedTitle);                  // Validate page title after successful login
     });
 
     /**
@@ -39,15 +35,13 @@ test.describe("Launch URL and verify the home page", () => {
      * - Security measures are in place (no specific detail about what's wrong)
      * - User remains on the login page (not redirected)
      */
-    test('TC03 - login with invalid credentials and verify error message', async ({ page }) => {
-        // Initialize the LoginPage class
-        const loginPage = new LoginPage(page);
+    test('TC03 - login with invalid credentials and verify error message @regression @login @negative', async ({ page }) => {
+        const loginPage = new LoginPage(page);                                                                          // Initialize LoginPage
         
-        // Attempt to login with invalid credentials (both username and password are incorrect)
-        await loginPage.login('invaliduser', 'invalidpassword');
+        // Attempt login with invalid credentials (test data from login.json for consistency)
+        await loginPage.login(loginData.invalidUser.username, loginData.invalidUser.password);
         
-        // Verify that the error message is displayed
-        // Expected message: "⚠️ Invalid username or password. Please try again."
+        // Verify error message is displayed (Expected: "⚠️ Invalid username or password. Please try again.")
         await loginPage.validateLoginErrorMessage();
     });
 
