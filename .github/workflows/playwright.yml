@@ -1,27 +1,159 @@
-name: Playwright Tests
+name: Playwright E2E Tests CI/CD Pipeline
+
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, develop ]
+  workflow_dispatch:  # Allow manual trigger
+
+env:
+  NODE_VERSION: '20.x'
+
 jobs:
-  test:
-    timeout-minutes: 60
+  # Job 1: Smoke Tests - Quick validation
+  smoke-tests:
+    name: 🚀 Smoke Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: 🧪 Run Smoke Tests
+        run: npx playwright test --grep @smoke
+
+      - name: 📊 Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-results
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
+
+      - name: 📸 Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-screenshots
+          path: screenshots/
+          retention-days: 7
+
+  # Job 2: Regression Tests - Full suite
+  regression-tests:
+    name: 🔄 Regression Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: smoke-tests  # Run only if smoke tests pass
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright Browsers
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: 🧪 Run Regression Tests on ${{ matrix.browser }}
+        run: npx playwright test --grep @regression --project=${{ matrix.browser }}
+
+      - name: 📊 Upload Test Results - ${{ matrix.browser }}
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-results-${{ matrix.browser }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 30
+
+  # Job 3: Mobile Tests
+  mobile-tests:
+    name: 📱 Mobile Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: smoke-tests
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright Browsers
+        run: npx playwright install --with-deps webkit
+
+      - name: 📱 Run Mobile Tests (iPhone 14 Pro Max)
+        run: npx playwright test --grep @mobile
+
+      - name: 📊 Upload Mobile Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-test-results
+          path: |
+            playwright-report/
+            test-results/
+            screenshots/
+          retention-days: 30
+
+  # Job 4: Test Summary Report
+  test-summary:
+    name: 📋 Test Summary
+    runs-on: ubuntu-latest
+    needs: [smoke-tests, regression-tests, mobile-tests]
+    if: always()
+    
+    steps:
+      - name: 📥 Download All Artifacts
+        uses: actions/download-artifact@v4
+
+      - name: 📊 Create Test Summary
+        run: |
+          echo "## 🎯 Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Completed Jobs:" >> $GITHUB_STEP_SUMMARY
+          echo "- Smoke Tests: ${{ needs.smoke-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Regression Tests: ${{ needs.regression-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Mobile Tests: ${{ needs.mobile-tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Framework Version: 2.0.0" >> $GITHUB_STEP_SUMMARY
+          echo "### 🎭 Playwright E2E Test Framework" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Browsers Tested:** Chromium, Firefox, WebKit" >> $GITHUB_STEP_SUMMARY
+          echo "**Mobile Device:** iPhone 14 Pro Max (430x932)" >> $GITHUB_STEP_SUMMARY

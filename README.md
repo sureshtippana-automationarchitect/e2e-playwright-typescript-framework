@@ -24,7 +24,8 @@ A scalable and maintainable end-to-end (E2E) test automation framework built usi
 - ✅ **Random data generation** - Unique test data for each run
 - ✅ **API + UI automation** - Support for both API and UI testing
 - ✅ **Custom reporting** - HTML reports with detailed execution logs
-- ✅ **CI/CD ready** - GitHub Actions compatible
+- ✅ **CI/CD integration** - GitHub Actions workflows for automated testing
+- ✅ **Scheduled testing** - Nightly test runs across all browsers
 - ✅ **AI-assisted development** - LLM-powered test generation and maintenance
 - ✅ **Clean architecture** - Organized folder structure with separate runner and docs
 
@@ -179,6 +180,11 @@ e2e-playwright-typescript-framework/
 ├── screenshots/                      # Test Screenshots (Auto-generated, gitignored)
 │   └── {TestName}/                  # Organized by test name
 │       └── {screenshotName}_{timestamp}.png
+│
+├── .github/                          # ✨ GitHub Actions CI/CD Configuration
+│   └── workflows/                   # GitHub Actions workflow files
+│       ├── playwright.yml           # Main CI/CD pipeline (smoke, regression, mobile)
+│       └── scheduled-tests.yml      # Nightly scheduled test runs
 │
 ├── test-results/                     # Test Execution Results (gitignored)
 ├── playwright-report/                # HTML Test Reports (gitignored)
@@ -554,6 +560,7 @@ The framework includes comprehensive documentation in the `docs/` folder:
 | **[NATURAL_LANGUAGE_TEST_RUNNER.md](docs/NATURAL_LANGUAGE_TEST_RUNNER.md)** | Natural language runner features, syntax, and examples |
 | **[DIRECT_COMMANDS_GUIDE.md](docs/DIRECT_COMMANDS_GUIDE.md)** | PowerShell profile setup for direct command execution |
 | **[QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)** | Command cheat sheet for common test commands |
+| **[GITHUB_ACTIONS_SETUP.md](docs/GITHUB_ACTIONS_SETUP.md)** | GitHub Actions CI/CD setup and configuration guide |
 | **[FIXTURES_GUIDE.md](docs/FIXTURES_GUIDE.md)** | Comprehensive Playwright fixtures guide |
 | **[FIXTURES_IMPLEMENTATION_SUMMARY.md](docs/FIXTURES_IMPLEMENTATION_SUMMARY.md)** | Fixtures implementation details and patterns |
 | **[TYPESCRIPT_IMPLEMENTATION.md](docs/TYPESCRIPT_IMPLEMENTATION.md)** | Technical implementation documentation |
