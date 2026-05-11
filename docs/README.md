@@ -18,6 +18,7 @@ This folder contains comprehensive documentation for the E2E Playwright TypeScri
 | Document | Description |
 |----------|-------------|
 | **[GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md)** | Complete GitHub Actions CI/CD setup and configuration guide |
+| **[GITHUB_ACTIONS_TROUBLESHOOTING.md](GITHUB_ACTIONS_TROUBLESHOOTING.md)** | GitHub Actions issues, fixes, and troubleshooting guide |
 
 ### Framework Features & Implementation
 
