@@ -241,6 +241,86 @@ export class HelperMethods {
         console.log(logMessage);
     }
 
+    /**
+     * Captures a full-page screenshot with a custom name and timestamp
+     * Screenshots are saved in the 'screenshots' directory with format: screenshots/{testName}/{screenshotName}_{timestamp}.png
+     * 
+     * @param screenshotName - Descriptive name for the screenshot (e.g., 'account-created', 'login-success')
+     * @param testName - Name of the test case (e.g., 'TC01', 'dashboard-test') for organizing screenshots
+     * @param fullPage - Whether to capture the full scrollable page (default: true)
+     * @returns The path to the saved screenshot file
+     * 
+     * @example
+     * // Capture full page screenshot
+     * await helperMethods.takeScreenshot('dashboard-view', 'TC01-Dashboard');
+     * // Result: screenshots/TC01-Dashboard/dashboard-view_05081445.png
+     */
+    async takeScreenshot(screenshotName: string, testName: string, fullPage: boolean = true): Promise<string> {
+        const timestamp = await this.getCurrentDateTime();                                      // Get timestamp in MMDDHHmmss format
+        const sanitizedTestName = testName.replace(/[^a-zA-Z0-9-_]/g, '-');                    // Remove invalid filename characters
+        const sanitizedScreenshotName = screenshotName.replace(/[^a-zA-Z0-9-_]/g, '-');        // Remove invalid filename characters
+        const screenshotPath = `screenshots/${sanitizedTestName}/${sanitizedScreenshotName}_${timestamp}.png`;  // Build screenshot path
+        
+        await this.page.screenshot({                                                            // Capture screenshot
+            path: screenshotPath,
+            fullPage: fullPage
+        });
+        
+        console.log(`📸 Screenshot captured: ${screenshotPath}`);                               // Log screenshot location
+        return screenshotPath;
+    }
+
+    /**
+     * Captures a screenshot of a specific element with a custom name and timestamp
+     * Useful for capturing specific UI components like modals, tables, or forms
+     * 
+     * @param locator - Playwright Locator of the element to screenshot
+     * @param screenshotName - Descriptive name for the screenshot
+     * @param testName - Name of the test case for organizing screenshots
+     * @returns The path to the saved screenshot file
+     * 
+     * @example
+     * // Capture screenshot of account table
+     * const tableLocator = page.locator('#accounts-table');
+     * await helperMethods.takeElementScreenshot(tableLocator, 'accounts-table', 'TC01-Dashboard');
+     * // Result: screenshots/TC01-Dashboard/accounts-table_05081445.png
+     */
+    async takeElementScreenshot(locator: Locator, screenshotName: string, testName: string): Promise<string> {
+        await this.waitForElementToBeVisible(locator);                                         // Wait for element to be visible
+        const timestamp = await this.getCurrentDateTime();                                      // Get timestamp in MMDDHHmmss format
+        const sanitizedTestName = testName.replace(/[^a-zA-Z0-9-_]/g, '-');                    // Remove invalid filename characters
+        const sanitizedScreenshotName = screenshotName.replace(/[^a-zA-Z0-9-_]/g, '-');        // Remove invalid filename characters
+        const screenshotPath = `screenshots/${sanitizedTestName}/${sanitizedScreenshotName}_${timestamp}.png`;  // Build screenshot path
+        
+        await locator.screenshot({                                                              // Capture element screenshot
+            path: screenshotPath
+        });
+        
+        console.log(`📸 Element screenshot captured: ${screenshotPath}`);                       // Log screenshot location
+        return screenshotPath;
+    }
+
+    /**
+     * Captures a screenshot with automatic test info extraction from Playwright test context
+     * This method uses Playwright's test info to automatically name the screenshot
+     * 
+     * @param testInfo - Playwright TestInfo object (available in test context)
+     * @param screenshotName - Descriptive name for the screenshot
+     * @param fullPage - Whether to capture the full scrollable page (default: true)
+     * @returns The path to the saved screenshot file
+     * 
+     * @example
+     * // Inside a Playwright test
+     * test('My test', async ({ page }, testInfo) => {
+     *     const helperMethods = new HelperMethods(page);
+     *     await helperMethods.takeScreenshotWithTestInfo(testInfo, 'step1-complete');
+     * });
+     */
+    async takeScreenshotWithTestInfo(testInfo: any, screenshotName: string, fullPage: boolean = true): Promise<string> {
+        const testName = testInfo.title.replace(/[^a-zA-Z0-9-_]/g, '-');                       // Extract and sanitize test name
+        return await this.takeScreenshot(screenshotName, testName, fullPage);                   // Delegate to takeScreenshot method
+    }
+
 }
 
 /**

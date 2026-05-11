@@ -264,4 +264,16 @@ export default class LoginPage {
   async validateLoginErrorMessage(): Promise<void> {
     await this.helper.validate(this.loginPageElements.loginErrorMessage, '✓ Login error message is displayed: "⚠️ Invalid username or password. Please try again."');
   }
+
+  /**
+   * Gets the HelperMethods instance for advanced operations like screenshots
+   * @returns HelperMethods instance associated with this page
+   * 
+   * @example
+   * const helperMethods = loginPage.getHelperMethods();
+   * await helperMethods.takeScreenshot('login-page', 'TC01');
+   */
+  public getHelperMethods(): HelperMethods {
+    return this.helper;
+  }
 }

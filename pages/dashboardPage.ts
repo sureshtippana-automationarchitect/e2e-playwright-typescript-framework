@@ -293,4 +293,16 @@ export default class DashboardPage {
       throw new Error(`✗ Account "${accountName}" not found in the account list`);
     }
   }
+
+  /**
+   * Gets the HelperMethods instance for advanced operations like screenshots
+   * @returns HelperMethods instance associated with this page
+   * 
+   * @example
+   * const helperMethods = dashboardPage.getHelperMethods();
+   * await helperMethods.takeScreenshot('dashboard-view', 'TC01');
+   */
+  public getHelperMethods(): HelperMethods {
+    return this.helper;
+  }
 }
