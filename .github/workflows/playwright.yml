@@ -31,10 +31,10 @@ jobs:
         run: npm ci
 
       - name: 🎭 Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
 
       - name: 🧪 Run Smoke Tests
-        run: npx playwright test --grep @smoke
+        run: npx playwright test --grep @smoke --project=chromium
 
       - name: 📊 Upload Test Results
         if: always()
@@ -80,7 +80,7 @@ jobs:
         run: npm ci
 
       - name: 🎭 Install Playwright Browsers
-        run: npx playwright install --with-deps ${{ matrix.browser }}
+        run: npx playwright install --with-deps
 
       - name: 🧪 Run Regression Tests on ${{ matrix.browser }}
         run: npx playwright test --grep @regression --project=${{ matrix.browser }}
@@ -116,10 +116,10 @@ jobs:
         run: npm ci
 
       - name: 🎭 Install Playwright Browsers
-        run: npx playwright install --with-deps webkit
+        run: npx playwright install --with-deps
 
       - name: 📱 Run Mobile Tests (iPhone 14 Pro Max)
-        run: npx playwright test --grep @mobile
+        run: npx playwright test --grep @mobile --project=chromium
 
       - name: 📊 Upload Mobile Test Results
         if: always()
