@@ -348,4 +348,16 @@ export default class TransactionsPage {
     async closeTransactionModal(): Promise<void> {
         await this.helper.clickElement(this.transactionsPageElements.modalCloseButton, 'Clicked modal close button (X)');
     }
+
+    /**
+     * Gets the HelperMethods instance for advanced operations like screenshots
+     * @returns HelperMethods instance associated with this page
+     * 
+     * @example
+     * const helperMethods = transactionsPage.getHelperMethods();
+     * await helperMethods.takeScreenshot('transaction-created', 'TC01');
+     */
+    public getHelperMethods(): HelperMethods {
+        return this.helper;
+    }
 }

@@ -22,7 +22,20 @@
     "transactions": "npx playwright test tests/transactions.spec.ts",
     "transactions:dev": "cross-env test_env=dev npx playwright test --headed tests/transactions.spec.ts --project=chromium",
     "transactions:headed": "npx playwright test --headed tests/transactions.spec.ts",
-    "transactions:debug": "npx playwright test --debug tests/transactions.spec.ts"
+    "transactions:debug": "npx playwright test --debug tests/transactions.spec.ts",
+    "clean:screenshots": "node -e \"const fs = require('fs'); const path = require('path'); const screenshotsDir = path.join(__dirname, 'screenshots'); if (fs.existsSync(screenshotsDir)) { fs.rmSync(screenshotsDir, { recursive: true, force: true }); fs.mkdirSync(screenshotsDir); console.log('🗑️  Screenshots directory cleaned'); } else { console.log('📁 Screenshots directory does not exist'); }\"",
+    "clean:all": "npm run clean:screenshots && rimraf test-results playwright-report",
+    "pretest": "echo 🚀 Starting test execution...",
+    "test:run": "ts-node test-runner/testRunner.ts",
+    "run": "ts-node test-runner/testRunner.ts",
+    "run:smoke-from-login": "ts-node test-runner/testRunner.ts \"run smoke tests from login spec\"",
+    "run:smoke-from-dashboard": "ts-node test-runner/testRunner.ts \"run smoke tests from dashboard spec\"",
+    "run:smoke-from-transactions": "ts-node test-runner/testRunner.ts \"run smoke tests from transactions spec\"",
+    "run:regression-and-smoke-from-dashboard": "ts-node test-runner/testRunner.ts \"run regression and smoke tests from dashboard spec\"",
+    "run:mobile-tests": "ts-node test-runner/testRunner.ts \"run mobile tests\"",
+    "run:smoke-headed": "ts-node test-runner/testRunner.ts \"run smoke tests in headed mode\"",
+    "run:all-tests-debug": "ts-node test-runner/testRunner.ts \"run all tests in debug mode\"",
+    "help": "ts-node test-runner/testRunner.ts --help"
   },
   "scriptsDescription": {
     "test": "Run all Playwright tests in headless mode across all browsers",
@@ -43,7 +56,10 @@
     "transactions": "Run transactions test suite in headless mode (default browser)",
     "transactions:dev": "Run transactions tests in DEV environment with headed Chromium browser (visible UI)",
     "transactions:headed": "Run transactions tests with browser visible (headed mode) - useful for debugging",
-    "transactions:debug": "Run transactions tests in debug mode with Playwright Inspector - step through tests line by line"
+    "transactions:debug": "Run transactions tests in debug mode with Playwright Inspector - step through tests line by line",
+    "clean:screenshots": "Remove all captured screenshots from the screenshots directory - useful for cleanup before new test runs",
+    "clean:all": "Clean all test artifacts including screenshots, test results, and HTML reports",
+    "pretest": "Pre-test hook that runs before test execution - displays start message"
   },
   "repository": {
     "type": "git",

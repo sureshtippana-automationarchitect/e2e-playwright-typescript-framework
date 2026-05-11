@@ -7,6 +7,10 @@ node_modules/
 /playwright/.cache/
 /playwright/.auth/
 
+# Screenshots (keep directory structure with .gitkeep)
+/screenshots/**
+!/screenshots/.gitkeep
+
 # Environment files
 .env.dev
 .env.uat
