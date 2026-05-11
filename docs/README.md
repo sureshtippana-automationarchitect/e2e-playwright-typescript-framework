@@ -13,6 +13,13 @@ This folder contains comprehensive documentation for the E2E Playwright TypeScri
 | **[DIRECT_COMMANDS_GUIDE.md](DIRECT_COMMANDS_GUIDE.md)** | Setup and usage guide for direct command execution |
 | **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** | Cheat sheet for common test commands and patterns |
 
+### CI/CD & Automation
+
+| Document | Description |
+|----------|-------------|
+| **[GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md)** | Complete GitHub Actions CI/CD setup and configuration guide |
+| **[GITHUB_ACTIONS_TROUBLESHOOTING.md](GITHUB_ACTIONS_TROUBLESHOOTING.md)** | GitHub Actions issues, fixes, and troubleshooting guide |
+
 ### Framework Features & Implementation
 
 | Document | Description |

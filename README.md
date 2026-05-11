@@ -19,12 +19,13 @@ A scalable and maintainable end-to-end (E2E) test automation framework built usi
 - ✅ **Data-driven testing** - JSON-based test data with dynamic generation
 - ✅ **Tagged test execution** - @smoke, @regression, @mobile, @negative tags
 - ✅ **Reusable utilities** - Helper methods for common operations
-- ✅ **Comprehensive documentation** - 8 detailed guides in docs/ folder
+- ✅ **Comprehensive documentation** - 10 detailed guides in docs/ folder
 - ✅ **Negative testing** - Error validation and security testing
 - ✅ **Random data generation** - Unique test data for each run
 - ✅ **API + UI automation** - Support for both API and UI testing
 - ✅ **Custom reporting** - HTML reports with detailed execution logs
-- ✅ **CI/CD ready** - GitHub Actions compatible
+- ✅ **CI/CD integration** - GitHub Actions workflows for automated testing
+- ✅ **Scheduled testing** - Nightly test runs across all browsers
 - ✅ **AI-assisted development** - LLM-powered test generation and maintenance
 - ✅ **Clean architecture** - Organized folder structure with separate runner and docs
 
@@ -91,7 +92,7 @@ A scalable and maintainable end-to-end (E2E) test automation framework built usi
 - **@login** - Login functionality tests (4 tests)
 - **@dashboard** - Dashboard functionality tests (4 tests)
 - **@transactions** - Transaction functionality tests (4 tests)
-- **@mobile** - Mobile viewport tests (4 tests) - iPhone 14 Pro Max
+- **@mobile** - Mobile viewport tests (3 tests) - iPhone 14 Pro Max
 - **@negative** - Negative/error scenario tests (1 test)
 
 ### Tag-Based Test Execution
@@ -179,6 +180,11 @@ e2e-playwright-typescript-framework/
 ├── screenshots/                      # Test Screenshots (Auto-generated, gitignored)
 │   └── {TestName}/                  # Organized by test name
 │       └── {screenshotName}_{timestamp}.png
+│
+├── .github/                          # ✨ GitHub Actions CI/CD Configuration
+│   └── workflows/                   # GitHub Actions workflow files
+│       ├── playwright.yml           # Main CI/CD pipeline (smoke, regression, mobile)
+│       └── scheduled-tests.yml      # Nightly scheduled test runs
 │
 ├── test-results/                     # Test Execution Results (gitignored)
 ├── playwright-report/                # HTML Test Reports (gitignored)
@@ -554,6 +560,8 @@ The framework includes comprehensive documentation in the `docs/` folder:
 | **[NATURAL_LANGUAGE_TEST_RUNNER.md](docs/NATURAL_LANGUAGE_TEST_RUNNER.md)** | Natural language runner features, syntax, and examples |
 | **[DIRECT_COMMANDS_GUIDE.md](docs/DIRECT_COMMANDS_GUIDE.md)** | PowerShell profile setup for direct command execution |
 | **[QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md)** | Command cheat sheet for common test commands |
+| **[GITHUB_ACTIONS_SETUP.md](docs/GITHUB_ACTIONS_SETUP.md)** | GitHub Actions CI/CD setup and configuration guide |
+| **[GITHUB_ACTIONS_TROUBLESHOOTING.md](docs/GITHUB_ACTIONS_TROUBLESHOOTING.md)** | GitHub Actions troubleshooting and issue resolution |
 | **[FIXTURES_GUIDE.md](docs/FIXTURES_GUIDE.md)** | Comprehensive Playwright fixtures guide |
 | **[FIXTURES_IMPLEMENTATION_SUMMARY.md](docs/FIXTURES_IMPLEMENTATION_SUMMARY.md)** | Fixtures implementation details and patterns |
 | **[TYPESCRIPT_IMPLEMENTATION.md](docs/TYPESCRIPT_IMPLEMENTATION.md)** | Technical implementation documentation |
@@ -720,7 +728,7 @@ This framework leverages Large Language Models (LLMs) for:
 - ✅ Mobile testing support with programmatic viewports
 - ✅ Data-driven testing patterns
 - ✅ Random data generation for unique test data
-- ✅ Comprehensive documentation suite (8 guides)
+- ✅ Comprehensive documentation suite (10 guides)
 - ✅ Framework organization and structure
 - ✅ Page Object Model best practices
 - ✅ Helper method patterns
@@ -800,29 +808,39 @@ Please update dashboard.spec.md with this new test case following the existing f
 
 ## 🚀 CI/CD Integration
 
-This framework is ready for integration with:
+### ✅ GitHub Actions - Fully Configured
 
-### GitHub Actions
-```yaml
-name: Playwright Tests
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm ci
-      - run: npx playwright install --with-deps
-      - run: npx playwright test
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-```
+The framework includes production-ready GitHub Actions workflows:
 
-### Jenkins
+**Main CI/CD Pipeline** (`.github/workflows/playwright.yml`)
+- 🚀 **Smoke Tests** - 6 critical tests on Chromium
+- 🔄 **Regression Tests** - 10 tests across 3 browsers (Chromium, Firefox, WebKit)
+- 📱 **Mobile Tests** - 3 tests on iPhone 14 Pro Max viewport
+- 📋 **Test Summary** - Consolidated results report
+
+**Scheduled Nightly Tests** (`.github/workflows/scheduled-tests.yml`)
+- Runs daily at 2 AM UTC
+- Full test coverage: 12 tests × 3 browsers = 36 executions
+- Matrix strategy for comprehensive testing
+
+**Triggers:**
+- ✅ Automatic on push to `main` or `develop`
+- ✅ Automatic on pull requests
+- ✅ Manual workflow dispatch
+- ✅ Scheduled (nightly)
+
+**Test Artifacts:**
+- HTML test reports (30-day retention)
+- Screenshots from all tests (7-day retention)
+- Separate reports per browser
+
+**See Complete Guide:**
+- 📖 [GITHUB_ACTIONS_SETUP.md](docs/GITHUB_ACTIONS_SETUP.md) - Detailed setup and usage
+- 🛠️ [GITHUB_ACTIONS_TROUBLESHOOTING.md](docs/GITHUB_ACTIONS_TROUBLESHOOTING.md) - Issue resolution
+
+### Other CI/CD Platforms
+
+**Jenkins**
 ```groovy
 pipeline {
     agent any
@@ -842,10 +860,10 @@ pipeline {
 }
 ```
 
-### Azure DevOps
-- Supports Azure Pipelines integration
-- Can be configured for multi-environment testing
-- Automated test execution on code commits
+**Azure DevOps / GitLab CI / CircleCI**
+- Compatible with all major CI/CD platforms
+- Use same npm commands as GitHub Actions
+- See [GITHUB_ACTIONS_SETUP.md](docs/GITHUB_ACTIONS_SETUP.md) for adapter examples
 
 ---
 
