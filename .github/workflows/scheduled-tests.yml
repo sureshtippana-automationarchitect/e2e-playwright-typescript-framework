@@ -35,8 +35,24 @@ jobs:
       - name: 📦 Install Dependencies
         run: npm ci
 
-      - name: 🎭 Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - name: 🎭 Get Playwright Version
+        id: playwright-version
+        run: echo "version=$(node -p "require('./package.json').devDependencies['@playwright/test']" | tr -d '^')" >> $GITHUB_OUTPUT
+
+      - name: 💾 Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}-${{ matrix.browser }}
+
+      - name: 🎭 Install Playwright Browser (${{ matrix.browser }})
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install ${{ matrix.browser }} --with-deps
+
+      - name: 🎭 Install System Dependencies (if cached)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps ${{ matrix.browser }}
 
       - name: 🧪 Run ${{ matrix.suite }} Tests on ${{ matrix.browser }}
         run: npx playwright test tests/${{ matrix.suite }}.spec.ts --project=${{ matrix.browser }}
@@ -77,8 +93,24 @@ jobs:
       - name: 📦 Install Dependencies
         run: npm ci
 
-      - name: 🎭 Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - name: 🎭 Get Playwright Version
+        id: playwright-version
+        run: echo "version=$(node -p "require('./package.json').devDependencies['@playwright/test']" | tr -d '^')" >> $GITHUB_OUTPUT
+
+      - name: 💾 Cache Playwright Browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}-${{ matrix.browser }}
+
+      - name: 🎭 Install Playwright Browser (${{ matrix.browser }})
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install ${{ matrix.browser }} --with-deps
+
+      - name: 🎭 Install System Dependencies (if cached)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps ${{ matrix.browser }}
 
       - name: 🧪 Run API Tests on ${{ matrix.browser }}
         run: npx playwright test tests/API/ --project=${{ matrix.browser }}
