@@ -1,0 +1,58 @@
+{
+  "validPets": [
+    {
+      "id": 10001,
+      "category": {
+        "id": 1,
+        "name": "Dogs"
+      },
+      "name": "Golden Retriever",
+      "photoUrls": ["https://example.com/golden-retriever.jpg"],
+      "tags": [
+        { "id": 1, "name": "friendly" },
+        { "id": 2, "name": "family-pet" }
+      ],
+      "status": "available"
+    },
+    {
+      "id": 10002,
+      "category": {
+        "id": 2,
+        "name": "Cats"
+      },
+      "name": "Persian Cat",
+      "photoUrls": ["https://example.com/persian-cat.jpg"],
+      "tags": [
+        { "id": 3, "name": "independent" }
+      ],
+      "status": "available"
+    },
+    {
+      "id": 10003,
+      "category": {
+        "id": 3,
+        "name": "Birds"
+      },
+      "name": "Parrot",
+      "photoUrls": ["https://example.com/parrot.jpg"],
+      "tags": [
+        { "id": 4, "name": "talkative" }
+      ],
+      "status": "pending"
+    }
+  ],
+  "invalidPets": [
+    {
+      "id": "invalid_id",
+      "name": "Invalid Pet with String ID"
+    },
+    {
+      "category": { "id": 1, "name": "Dogs" }
+    }
+  ],
+  "petStatuses": {
+    "available": "available",
+    "pending": "pending",
+    "sold": "sold"
+  }
+}

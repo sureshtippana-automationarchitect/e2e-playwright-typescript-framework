@@ -199,12 +199,12 @@ npm run login:dev
 
 **Run all login tests:**
 ```bash
-npx playwright test tests/login.spec.ts
+npx playwright test tests/UI/login.spec.ts
 ```
 
 **Run in debug mode:**
 ```bash
-npx playwright test --debug tests/login.spec.ts
+npx playwright test --debug tests/UI/login.spec.ts
 ```
 
 ### Test Hooks

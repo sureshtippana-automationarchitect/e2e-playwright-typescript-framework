@@ -100,7 +100,7 @@ For complete documentation, see the [docs](../docs/) folder:
 2. **Wrapper adds prefix**: Converts to `run smoke tests from login spec`
 3. **Executes TypeScript runner**: `npx ts-node test-runner/testRunner.ts`
 4. **Parser processes command**: Extracts tags, spec files, modes, browsers
-5. **Builds Playwright command**: `npx playwright test --grep="@smoke" tests/login.spec.ts`
+5. **Builds Playwright command**: `npx playwright test --grep="@smoke" tests/UI/login.spec.ts`
 6. **Runs tests**: Executes Playwright with parsed arguments
 
 ### Dependencies

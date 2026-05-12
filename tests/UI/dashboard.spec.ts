@@ -3,11 +3,11 @@
 // import { test } from '@playwright/test';
 
 // Option 2: Custom fixtures test (new approach with auto-injected dependencies)
-import { test, expect } from '../fixtures/baseFixtures';                         // Custom test with fixtures (page objects auto-injected)
+import { test, expect } from '../../fixtures/baseFixtures';                         // Custom test with fixtures (page objects auto-injected)
 
-import { EnvironmentManager, getBankURL } from '../config/environmentManager';  // Environment configuration utilities
-import loginData from '../test-data/login.json';                                 // User credentials test data
-import dashboardData from '../test-data/dashboard.json';                         // Dashboard accounts test data
+import { EnvironmentManager, getBankURL } from '../../config/environmentManager';  // Environment configuration utilities
+import loginData from '../../test-data/login.json';                                 // User credentials test data
+import dashboardData from '../../test-data/dashboard.json';                         // Dashboard accounts test data
 
 const envManager = EnvironmentManager.getInstance();                             // Environment manager instance (dev, uat, prod)
 

@@ -1,9 +1,9 @@
 // LEARNING NOTE: Using custom fixtures for cleaner transaction tests
 // Fixtures provide auto-injected page objects and pre-authenticated state
-import { test, expect } from '../fixtures/baseFixtures';                         // Custom test with fixtures (page objects auto-injected)
-import { EnvironmentManager, getBankURL } from '../config/environmentManager';  // Environment configuration utilities
-import loginData from '../test-data/login.json';                                 // Login credentials test data
-import transactionsData from '../test-data/transactions.json';                   // Transactions test data
+import { test, expect } from '../../fixtures/baseFixtures';                         // Custom test with fixtures (page objects auto-injected)
+import { EnvironmentManager, getBankURL } from '../../config/environmentManager';  // Environment configuration utilities
+import loginData from '../../test-data/login.json';                                 // Login credentials test data
+import transactionsData from '../../test-data/transactions.json';                   // Transactions test data
 
 const envManager = EnvironmentManager.getInstance();                             // Environment manager instance (dev, uat, prod)
 

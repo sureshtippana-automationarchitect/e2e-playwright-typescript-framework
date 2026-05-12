@@ -1,8 +1,8 @@
 // LEARNING NOTE: Using custom fixtures for cleaner, more maintainable tests
 // Fixtures automatically inject page objects - no need for 'new LoginPage(page)'
-import { test, expect } from '../fixtures/baseFixtures';                         // Custom test with fixtures (page objects auto-injected)
-import { EnvironmentManager, getBankURL } from '../config/environmentManager';  // Environment configuration utilities
-import loginData from '../test-data/login.json';                                 // Login credentials test data
+import { test, expect } from '../../fixtures/baseFixtures';                         // Custom test with fixtures (page objects auto-injected)
+import { EnvironmentManager, getBankURL } from '../../config/environmentManager';  // Environment configuration utilities
+import loginData from '../../test-data/login.json';                                 // Login credentials test data
 
 const envManager = EnvironmentManager.getInstance();                             // Environment manager instance (dev, uat, prod)
 

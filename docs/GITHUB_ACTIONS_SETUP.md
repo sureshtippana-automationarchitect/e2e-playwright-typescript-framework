@@ -11,14 +11,19 @@ This guide provides step-by-step instructions for setting up and using GitHub Ac
 ### 1. **Main CI/CD Pipeline** (`playwright.yml`)
 - **Trigger:** Runs on push/PR to `main` or `develop` branches
 - **Jobs:**
-  - 🚀 **Smoke Tests** - Quick validation (6 tests)
-  - 🔄 **Regression Tests** - Full suite across 3 browsers (10 tests)
+  - 🚀 **Smoke Tests** - Quick UI validation (6 tests)
+  - 🔄 **Regression Tests** - Full UI suite across 3 browsers (10 tests)
+  - 🔌 **API Smoke Tests** - Quick API validation (4 tests)
+  - 🔌 **API Regression Tests** - Full API suite across 3 browsers (6 tests)
   - 📱 **Mobile Tests** - iPhone 14 Pro Max testing (3 tests)
   - 📋 **Test Summary** - Consolidated results
 
 ### 2. **Scheduled Nightly Tests** (`scheduled-tests.yml`)
 - **Trigger:** Runs every night at 2 AM UTC
-- **Coverage:** All 12 tests across all 3 browsers (36 total executions)
+- **Coverage:** 
+  - UI Tests: 12 tests across 3 browsers (36 executions)
+  - API Tests: 10 tests across 3 browsers (30 executions)
+  - **Total:** 66 test executions
 - **Matrix Strategy:** Tests each spec file on each browser
 
 ---
@@ -75,7 +80,7 @@ git push origin main
 git push origin develop
 ```
 - Automatically runs the main CI/CD pipeline
-- Executes: Smoke → Regression → Mobile tests
+- Executes: UI Smoke → UI Regression → API Smoke → API Regression → Mobile tests
 
 #### 2. **On Pull Request**
 ```bash
@@ -121,19 +126,25 @@ gh workflow run "Scheduled Nightly Tests" --ref develop
 2. See the workflow visualization with all jobs
 
 ### Step 3: View Job Details
-- **Smoke Tests** - Quick validation results
-- **Regression Tests** - Detailed results per browser
+- **UI Smoke Tests** - Quick UI validation results
+- **UI Regression Tests** - Detailed UI results per browser
+- **API Smoke Tests** - Quick API validation results
+- **API Regression Tests** - Detailed API results per browser
 - **Mobile Tests** - Mobile viewport test results
 
 ### Step 4: Download Artifacts
 1. Scroll to **"Artifacts"** section at the bottom
 2. Download available reports:
-   - `smoke-test-results` - Smoke test HTML report
-   - `regression-results-chromium` - Chromium regression results
-   - `regression-results-firefox` - Firefox regression results
-   - `regression-results-webkit` - WebKit regression results
+   - `smoke-test-results` - UI smoke test HTML report
+   - `regression-results-chromium` - Chromium UI regression results
+   - `regression-results-firefox` - Firefox UI regression results
+   - `regression-results-webkit` - WebKit UI regression results
+   - `api-smoke-test-results` - API smoke test results
+   - `api-regression-results-chromium` - Chromium API regression results
+   - `api-regression-results-firefox` - Firefox API regression results
+   - `api-regression-results-webkit` - WebKit API regression results
    - `mobile-test-results` - Mobile test results with screenshots
-   - `smoke-screenshots` - Screenshots from smoke tests
+   - `smoke-screenshots` - Screenshots from UI smoke tests
 
 ### Step 5: View Test Summary
 - Check the **"Summary"** section for quick overview
@@ -143,33 +154,50 @@ gh workflow run "Scheduled Nightly Tests" --ref develop
 
 ## 🎯 Workflow Job Details
 
-### Job 1: Smoke Tests 🚀
-- **Purpose:** Quick validation before running full suite
-- **Tests Run:** 6 smoke tests (@smoke tag)
+### Job 1: UI Smoke Tests 🚀
+- **Purpose:** Quick UI validation before running full suite
+- **Tests Run:** 6 UI smoke tests (@smoke tag)
 - **Browser:** Chromium only (fastest)
 - **Timeout:** 10 minutes
 - **Artifacts:** Test results + Screenshots
 
-### Job 2: Regression Tests 🔄
-- **Purpose:** Comprehensive cross-browser testing
-- **Tests Run:** 10 regression tests (@regression tag)
+### Job 2: UI Regression Tests 🔄
+- **Purpose:** Comprehensive cross-browser UI testing
+- **Tests Run:** 10 UI regression tests (@regression tag)
 - **Browsers:** Chromium, Firefox, WebKit (matrix strategy)
 - **Timeout:** 30 minutes per browser
-- **Dependency:** Runs only if smoke tests pass
+- **Dependency:** Runs only if UI smoke tests pass
 - **Artifacts:** Separate results per browser
 
-### Job 3: Mobile Tests 📱
+### Job 3: API Smoke Tests 🔌
+- **Purpose:** Quick API validation
+- **Tests Run:** 4 API smoke tests (@smoke @api tags)
+- **API:** Pet Store API (https://petstore.swagger.io/v2)
+- **Browser:** Chromium only (fastest)
+- **Timeout:** 10 minutes
+- **Dependency:** Runs only if UI smoke tests pass
+- **Artifacts:** API test results
+
+### Job 4: API Regression Tests 🔌
+- **Purpose:** Comprehensive cross-browser API testing
+- **Tests Run:** 6 API regression tests (@regression @api tags)
+- **Browsers:** Chromium, Firefox, WebKit (matrix strategy)
+- **Timeout:** 15 minutes per browser
+- **Dependency:** Runs only if API smoke tests pass
+- **Artifacts:** Separate API results per browser
+
+### Job 5: Mobile Tests 📱
 - **Purpose:** Mobile viewport testing
 - **Tests Run:** 3 mobile tests (@mobile tag)
 - **Device:** iPhone 14 Pro Max (430x932 viewport)
 - **Browser:** WebKit (Safari)
 - **Timeout:** 15 minutes
-- **Dependency:** Runs only if smoke tests pass
+- **Dependency:** Runs only if UI smoke tests pass
 - **Artifacts:** Results + Screenshots
 
-### Job 4: Test Summary 📋
+### Job 6: Test Summary 📋
 - **Purpose:** Consolidated results report
-- **Generates:** Summary of all job results
+- **Generates:** Summary of all job results (UI + API)
 - **Runs:** Always (even if tests fail)
 - **Dependency:** Waits for all test jobs to complete
 
@@ -212,7 +240,14 @@ login-tests-only:
   runs-on: ubuntu-latest
   steps:
     - name: Run Login Tests
-      run: npx playwright test tests/login.spec.ts
+      run: npx playwright test tests/UI/login.spec.ts
+
+api-tests-only:
+  name: API Tests
+  runs-on: ubuntu-latest
+  steps:
+    - name: Run API Tests
+      run: npx playwright test tests/API/
 ```
 
 ### 4. Add Environment Variables

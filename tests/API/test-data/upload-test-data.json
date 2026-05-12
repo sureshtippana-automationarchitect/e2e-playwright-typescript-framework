@@ -1,0 +1,32 @@
+{
+  "uploadScenarios": [
+    {
+      "scenario": "Valid Image Upload",
+      "petId": 1,
+      "additionalMetadata": "Valid test image upload",
+      "fileName": "dog-photo.png",
+      "fileType": "image/png",
+      "expectedStatus": 200
+    },
+    {
+      "scenario": "Upload with Metadata",
+      "petId": 2,
+      "additionalMetadata": "Pet profile picture for adoption listing",
+      "fileName": "cat-photo.jpg",
+      "fileType": "image/jpeg",
+      "expectedStatus": 200
+    }
+  ],
+  "invalidScenarios": [
+    {
+      "scenario": "Invalid Pet ID",
+      "petId": "invalid_id",
+      "expectedStatus": 400
+    },
+    {
+      "scenario": "Non-existent Pet",
+      "petId": 9999999,
+      "expectedStatus": 404
+    }
+  ]
+}

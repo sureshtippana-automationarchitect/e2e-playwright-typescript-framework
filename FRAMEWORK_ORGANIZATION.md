@@ -30,9 +30,14 @@ e2e-playwright-typescript-framework/
 │   └── README.md             # Documentation index
 │
 ├── tests/                    # Test specifications
-│   ├── login.spec.ts
-│   ├── Dashboard.spec.ts
-│   └── transactions.spec.ts
+│   ├── UI/                   # UI Test specifications
+│   │   ├── login.spec.ts
+│   │   ├── dashboard.spec.ts
+│   │   ├── transactions.spec.ts
+│   │   ├── fixtures-examples.spec.ts
+│   │   └── *.spec.md         # Test documentation files
+│   └── API/                  # API Test specifications
+│       └── README.md         # API tests guide
 │
 ├── pages/                    # Page Object Models
 │   ├── loginPage.ts

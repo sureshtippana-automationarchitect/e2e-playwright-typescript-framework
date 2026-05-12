@@ -82,18 +82,87 @@ A scalable and maintainable end-to-end (E2E) test automation framework built usi
 - Mobile testing with iPhone 14 Pro Max viewport
 - Fixtures-based implementation with loginWithAdmin
 
+### API Test Suite (`petstore.spec.ts`)
+**Total Test Cases:** 10 (Organized structure with payloads, endpoints, test-data)  
+**Tags:** `@api`, `@smoke`, `@regression`, `@crud`, `@upload`, `@query`, `@negative`, `@security`
+
+| Test Case | Description | Tags | Status |
+|-----------|-------------|------|--------|
+| TC01 | Upload image for pet | @smoke @api @upload | ✅ Active |
+| TC02 | Create new pet and verify response | @smoke @regression @api @crud | ✅ Active |
+| TC03 | Get pet by ID and verify details | @smoke @api @crud | ✅ Active |
+| TC04 | Update existing pet and verify changes | @regression @api @crud | ✅ Active |
+| TC05 | Delete pet and verify removal | @regression @api @crud | ✅ Active |
+| TC06 | Find pets by status and verify results | @smoke @api @query | ✅ Active |
+| TC07 | Create multiple pets using test data | @regression @api @crud | ✅ Active |
+| TC08 | Get pet with invalid ID (negative) | @regression @api @negative | ✅ Active |
+| TC09 | Access API without authorization (security) | @regression @api @negative @security | ✅ Active |
+| TC10 | Upload multiple images using test data | @regression @api @upload | ✅ Active |
+
+**API Structure:**
+```
+tests/API/
+├── payloads/          - Request body templates (JSON)
+├── endpoints/         - API endpoint methods (reusable)
+├── test-data/         - Test scenarios & configuration
+├── helpers/           - Utility functions
+└── petstore.spec.ts   - Main API test file
+```
+
+**Features:**
+- Organized structure with separated concerns (payloads, endpoints, test-data)
+- Reusable API endpoint methods (PetEndpoints class)
+- Data-driven testing with multiple scenarios
+- Image upload with multipart/form-data
+- Authorization with API key (special-key)
+- Negative testing for error scenarios
+- Security testing for unauthorized access
+- Full CRUD operations coverage
+- Response schema validation
+
+**API Configuration:**
+- Base URL: `https://petstore.swagger.io/v2`
+- Authorization: API Key (`special-key`)
+- Config File: `tests/API/test-data/api-config.json`
+
+**Run API Tests:**
+```bash
+# Run Pet Store API tests
+npm run api:petstore:tests
+
+# Run with filters
+npx playwright test tests/API/petstore.spec.ts --grep "@smoke"
+npx playwright test tests/API/petstore.spec.ts --headed
+npx playwright test tests/API/petstore.spec.ts --debug
+
+# Run all API tests (when multiple spec files exist)
+npx playwright test tests/API/
+```
+
 ---
 
 ## 🏷️ Test Tags & Execution
 
 ### Available Tags
-- **@smoke** - Critical path tests (6 tests) - Fast validation
-- **@regression** - Full test suite (10 tests) - Comprehensive coverage
+
+**UI Tests:**
+- **@smoke** - Critical path tests (6 UI tests) - Fast validation
+- **@regression** - Full test suite (10 UI tests) - Comprehensive coverage
 - **@login** - Login functionality tests (4 tests)
 - **@dashboard** - Dashboard functionality tests (4 tests)
 - **@transactions** - Transaction functionality tests (4 tests)
 - **@mobile** - Mobile viewport tests (3 tests) - iPhone 14 Pro Max
 - **@negative** - Negative/error scenario tests (1 test)
+
+**API Tests:**
+- **@api** - All API tests (10 tests)
+- **@smoke** - Critical API endpoints (4 API tests)
+- **@regression** - Full API regression (6 API tests)
+- **@crud** - Create, Read, Update, Delete operations (5 tests)
+- **@upload** - File upload functionality (2 tests)
+- **@query** - Query/search operations (1 test)
+- **@negative** - API error handling (2 tests)
+- **@security** - Security and authentication (1 test)
 
 ### Tag-Based Test Execution
 ```bash
@@ -144,10 +213,27 @@ e2e-playwright-typescript-framework/
 │   └── baseFixtures.ts              # Custom fixtures (loginPage, dashboardPage, loginWithAdmin, etc.)
 │
 ├── tests/                            # Test Specification Files
-│   ├── login.spec.ts                # Login test scenarios (4 test cases)
-│   ├── Dashboard.spec.ts            # Dashboard account management (4 test cases)
-│   ├── transactions.spec.ts         # Transaction tests (4 test cases)
-│   └── fixtures-examples.spec.ts    # Fixtures usage examples and patterns
+│   ├── UI/                          # UI Test Specifications
+│   │   ├── login.spec.ts            # Login test scenarios (4 test cases)
+│   │   ├── dashboard.spec.ts        # Dashboard account management (4 test cases)
+│   │   ├── transactions.spec.ts     # Transaction tests (4 test cases)
+│   │   └── fixtures-examples.spec.ts # Fixtures usage examples
+│   │
+│   └── API/                         # API Test Specifications (Organized Structure)
+│       ├── payloads/                # Request body templates (JSON)
+│       │   ├── create-pet.json
+│       │   ├── update-pet.json
+│       │   └── upload-image.json
+│       ├── endpoints/               # API endpoint methods (reusable)
+│       │   └── pet-endpoints.ts
+│       ├── test-data/               # Test scenarios & configuration
+│       │   ├── api-config.json      # Base URL, API key, headers
+│       │   ├── pet-test-data.json   # Pet test scenarios
+│       │   └── upload-test-data.json # Upload scenarios
+│       ├── helpers/                 # API utility functions
+│       │   └── api-helpers.ts
+│       ├── petstore.spec.ts         # Main API test file (10 test cases)
+│       └── README.md                # API tests documentation
 │
 ├── pages/                            # Page Object Model Classes
 │   ├── loginPage.ts                 # Login page with validation methods
@@ -173,6 +259,7 @@ e2e-playwright-typescript-framework/
 │   ├── login.json                   # Login credentials
 │   ├── dashboard.json               # Dashboard account test data
 │   └── transactions.json            # Transaction test data
+│   # Note: API test data is in tests/API/test-data/
 │
 ├── utils/                            # Utility Functions
 │   └── logger.ts                    # Custom logger utility
@@ -364,7 +451,7 @@ npm run dashboard
 npm run transactions
 
 # Run specific test case
-npx playwright test tests/login.spec.ts -g "TC01"
+npx playwright test tests/UI/login.spec.ts -g "TC01"
 ```
 
 ### Additional Options
@@ -517,7 +604,7 @@ test('Mobile test @mobile', async ({ page, loginWithAdmin, dashboardPage }) => {
 npx playwright test --grep @mobile
 
 # Specific mobile test
-npx playwright test tests/Dashboard.spec.ts -g "TC04"
+npx playwright test tests/UI/dashboard.spec.ts -g "TC04"
 ```
 
 ---
@@ -813,14 +900,19 @@ Please update dashboard.spec.md with this new test case following the existing f
 The framework includes production-ready GitHub Actions workflows:
 
 **Main CI/CD Pipeline** (`.github/workflows/playwright.yml`)
-- 🚀 **Smoke Tests** - 6 critical tests on Chromium
-- 🔄 **Regression Tests** - 10 tests across 3 browsers (Chromium, Firefox, WebKit)
+- 🚀 **UI Smoke Tests** - 6 critical UI tests on Chromium
+- 🔄 **UI Regression Tests** - 10 UI tests across 3 browsers (Chromium, Firefox, WebKit)
+- 🔌 **API Smoke Tests** - 4 critical API tests on Chromium
+- 🔌 **API Regression Tests** - 6 API tests across 3 browsers
 - 📱 **Mobile Tests** - 3 tests on iPhone 14 Pro Max viewport
-- 📋 **Test Summary** - Consolidated results report
+- 📋 **Test Summary** - Consolidated results report (UI + API)
 
 **Scheduled Nightly Tests** (`.github/workflows/scheduled-tests.yml`)
 - Runs daily at 2 AM UTC
-- Full test coverage: 12 tests × 3 browsers = 36 executions
+- Full test coverage: 
+  - UI: 12 tests × 3 browsers = 36 executions
+  - API: 10 tests × 3 browsers = 30 executions
+  - **Total: 66 test executions**
 - Matrix strategy for comprehensive testing
 
 **Triggers:**
@@ -830,9 +922,10 @@ The framework includes production-ready GitHub Actions workflows:
 - ✅ Scheduled (nightly)
 
 **Test Artifacts:**
-- HTML test reports (30-day retention)
-- Screenshots from all tests (7-day retention)
+- HTML test reports for UI and API tests (30-day retention)
+- Screenshots from all UI tests (7-day retention)
 - Separate reports per browser
+- API test results with response validation
 
 **See Complete Guide:**
 - 📖 [GITHUB_ACTIONS_SETUP.md](docs/GITHUB_ACTIONS_SETUP.md) - Detailed setup and usage

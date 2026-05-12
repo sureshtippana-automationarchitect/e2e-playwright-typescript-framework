@@ -1,0 +1,27 @@
+{
+  "apiConfig": {
+    "baseUrl": "https://petstore.swagger.io/v2",
+    "apiKey": "special-key",
+    "timeout": 30000,
+    "retries": 2
+  },
+  "endpoints": {
+    "pet": {
+      "create": "/pet",
+      "update": "/pet",
+      "findById": "/pet/{petId}",
+      "findByStatus": "/pet/findByStatus",
+      "uploadImage": "/pet/{petId}/uploadImage",
+      "delete": "/pet/{petId}"
+    }
+  },
+  "headers": {
+    "default": {
+      "Content-Type": "application/json",
+      "api_key": "special-key"
+    },
+    "multipart": {
+      "api_key": "special-key"
+    }
+  }
+}

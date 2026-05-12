@@ -155,8 +155,8 @@ npm run help
 
 ### ❌ Before (Complex CLI)
 ```bash
-npx playwright test --grep @smoke --headed tests/Dashboard.spec.ts
-npx playwright test --grep "@smoke|@mobile" --headed tests/Dashboard.spec.ts
+npx playwright test --grep @smoke --headed tests/UI/dashboard.spec.ts
+npx playwright test --grep "@smoke|@mobile" --headed tests/UI/dashboard.spec.ts
 ```
 
 ### ✅ After (Natural Language)
@@ -182,12 +182,12 @@ Calls: node testRunner.js "run smoke tests from login spec"
          ↓
 testRunner.js parses the command:
   • Detects tags: @smoke
-  • Detects spec: tests/login.spec.ts
+  • Detects spec: tests/UI/login.spec.ts
   • Detects mode: headless (default)
   • Detects browser: chromium (default)
          ↓
 Builds Playwright command:
-  npx playwright test --grep="@smoke" tests/login.spec.ts
+  npx playwright test --grep="@smoke" tests/UI/login.spec.ts
          ↓
 Executes and shows colored output
 ```

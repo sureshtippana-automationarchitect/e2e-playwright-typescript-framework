@@ -227,9 +227,9 @@ node testRunner.js "run mobile and smoke tests from all specs in headed mode"
 - `@negative` - Negative/error scenario tests
 
 ### 📁 Spec Files
-- `login` → `tests/login.spec.ts`
-- `dashboard` → `tests/Dashboard.spec.ts`
-- `transactions` → `tests/transactions.spec.ts`
+- `login` → `tests/UI/login.spec.ts`
+- `dashboard` → `tests/UI/dashboard.spec.ts`
+- `transactions` → `tests/UI/transactions.spec.ts`
 
 ### 🎬 Display Modes
 - `headless` - Default, no browser UI (fastest)

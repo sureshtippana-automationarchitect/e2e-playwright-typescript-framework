@@ -31,18 +31,18 @@ Successfully implemented **Playwright Fixtures** throughout your test automation
 
 ## 🔄 Files Updated
 
-### **tests/Dashboard.spec.ts**
+### **tests/UI/dashboard.spec.ts**
 - ✅ Updated imports to use fixtures
 - ✅ TC01 now uses `loginWithAdmin` + `dashboardPage` + `helperMethods` fixtures
 - ✅ TC02/TC03 data-driven tests use `loginWithAdmin` + `dashboardPage` fixtures
 - ✅ **Result: 50% less setup code, cleaner tests**
 
-### **tests/login.spec.ts**  
+### **tests/UI/login.spec.ts**  
 - ✅ Updated imports to use fixtures
 - ✅ All 3 test cases (TC01, TC02, TC03) use `loginPage` fixture
 - ✅ **Result: 15% less code, immediate clarity**
 
-### **tests/transactions.spec.ts**
+### **tests/UI/transactions.spec.ts**
 - ✅ Updated imports to use fixtures
 - ✅ TC01 uses `loginWithAdmin` + `transactionsPage` fixtures
 - ✅ TC02/TC03 data-driven tests use `loginWithAdmin` + `transactionsPage` fixtures
