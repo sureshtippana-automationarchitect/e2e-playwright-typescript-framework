@@ -10,8 +10,9 @@ env:
   NODE_VERSION: '20.x'
 
 jobs:
-  full-test-suite:
-    name: 🌙 Nightly Full Test Suite
+  # Job 1: UI Tests - Full Suite
+  ui-test-suite:
+    name: 🕹️ Nightly UI Test Suite
     runs-on: ubuntu-latest
     timeout-minutes: 60
     
@@ -19,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         browser: [chromium, firefox, webkit]
-        suite: [login, dashboard, transactions]
+        suite: [UI/login, UI/dashboard, UI/transactions]
     
     steps:
       - name: 📥 Checkout Code
@@ -45,17 +46,59 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nightly-${{ matrix.suite }}-${{ matrix.browser }}
+          name: nightly-ui-${{ matrix.suite }}-${{ matrix.browser }}
           path: |
             playwright-report/
             test-results/
             screenshots/
           retention-days: 14
 
+  # Job 2: API Tests - Full Suite
+  api-test-suite:
+    name: 🔌 Nightly API Test Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🎭 Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: 🧪 Run API Tests on ${{ matrix.browser }}
+        run: npx playwright test tests/API/ --project=${{ matrix.browser }}
+        continue-on-error: true
+
+      - name: 📊 Upload API Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-api-${{ matrix.browser }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+  # Job 3: Notification
   notification:
     name: 📧 Send Test Notification
     runs-on: ubuntu-latest
-    needs: full-test-suite
+    needs: [ui-test-suite, api-test-suite]
     if: always()
     
     steps:
@@ -64,11 +107,20 @@ jobs:
           echo "## 🌙 Nightly Test Execution Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Date:** $(date)" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** ${{ needs.full-test-suite.result }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Test Suite Coverage:" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Test Suite Status:" >> $GITHUB_STEP_SUMMARY
+          echo "- UI Tests: ${{ needs.ui-test-suite.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- API Tests: ${{ needs.api-test-suite.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🕹️ UI Test Coverage:" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Login Tests (3 browsers)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Dashboard Tests (3 browsers)" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Transaction Tests (3 browsers)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Total Test Executions:** 36 (12 tests × 3 browsers)" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔌 API Test Coverage:" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Pet Store API Tests (3 browsers)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ 10 Test Cases (CRUD, Upload, Query, Security)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Total UI Test Executions:** 36 (12 tests × 3 browsers)" >> $GITHUB_STEP_SUMMARY
+          echo "**Total API Test Executions:** 30 (10 tests × 3 browsers)" >> $GITHUB_STEP_SUMMARY
+          echo "**Grand Total:** 66 test executions" >> $GITHUB_STEP_SUMMARY

@@ -86,9 +86,9 @@
 
 | File | Test Count | Mobile Tests | Status |
 |------|-----------|--------------|--------|
-| tests/login.spec.ts | 4 | 1 (TC04) | ✅ Correct |
-| tests/dashboard.spec.ts | 4 | 1 (TC04) | ✅ Correct |
-| tests/transactions.spec.ts | 4 | 1 (TC04) | ✅ Correct |
+| tests/UI/login.spec.ts | 4 | 1 (TC04) | ✅ Correct |
+| tests/UI/dashboard.spec.ts | 4 | 1 (TC04) | ✅ Correct |
+| tests/UI/transactions.spec.ts | 4 | 1 (TC04) | ✅ Correct |
 
 **Mobile Test Total:** 3 ✅
 
