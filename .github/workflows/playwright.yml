@@ -2,9 +2,9 @@ name: Playwright E2E Tests CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ develop ]
   workflow_dispatch:  # Allow manual trigger
 
 env:
@@ -41,9 +41,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browsers (All)
+      - name: 🎭 Install Playwright Browsers (Chromium only)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
@@ -106,9 +106,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browsers (All)
+      - name: 🎭 Install Playwright Browsers (Chromium only)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
@@ -158,9 +158,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browsers (All)
+      - name: 🎭 Install Playwright Browsers (Chromium only)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
@@ -215,9 +215,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browsers (All)
+      - name: 🎭 Install Playwright Browsers (Chromium only)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
@@ -267,9 +267,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browsers (All)
+      - name: 🎭 Install Playwright Browsers (Chromium only)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        run: npx playwright install chromium --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
