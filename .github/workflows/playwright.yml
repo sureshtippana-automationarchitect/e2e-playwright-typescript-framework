@@ -41,13 +41,13 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browsers (Chromium only)
+      - name: 🎭 Install Playwright Browsers (All)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install chromium --with-deps
+        run: npx playwright install --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
+        run: npx playwright install-deps
 
       - name: 🧪 Run Smoke Tests
         run: npx playwright test --grep @smoke --project=chromium
@@ -104,15 +104,15 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}-${{ matrix.browser }}
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browser (${{ matrix.browser }})
+      - name: 🎭 Install Playwright Browsers (All)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install ${{ matrix.browser }} --with-deps
+        run: npx playwright install --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps ${{ matrix.browser }}
+        run: npx playwright install-deps
 
       - name: 🧪 Run Regression Tests on ${{ matrix.browser }}
         run: npx playwright test --grep @regression --project=${{ matrix.browser }}
@@ -158,13 +158,13 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browsers (Chromium only)
+      - name: 🎭 Install Playwright Browsers (All)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install chromium --with-deps
+        run: npx playwright install --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
+        run: npx playwright install-deps
 
       - name: 🧪 Run API Smoke Tests
         run: npx playwright test tests/API/petstore.spec.ts --grep @smoke --project=chromium
@@ -213,15 +213,15 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}-${{ matrix.browser }}
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browser (${{ matrix.browser }})
+      - name: 🎭 Install Playwright Browsers (All)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install ${{ matrix.browser }} --with-deps
+        run: npx playwright install --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps ${{ matrix.browser }}
+        run: npx playwright install-deps
 
       - name: 🧪 Run API Regression Tests on ${{ matrix.browser }}
         run: npx playwright test tests/API/ --grep @regression --project=${{ matrix.browser }}
@@ -267,13 +267,13 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
 
-      - name: 🎭 Install Playwright Browsers (Chromium only)
+      - name: 🎭 Install Playwright Browsers (All)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install chromium --with-deps
+        run: npx playwright install --with-deps
 
       - name: 🎭 Install System Dependencies (if cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
+        run: npx playwright install-deps
 
       - name: 📱 Run Mobile Tests (iPhone 14 Pro Max)
         run: npx playwright test --grep @mobile --project=chromium
