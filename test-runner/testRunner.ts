@@ -69,16 +69,16 @@ function parseCommand(input: string): ParsedCommand {
 
     // Parse spec files
     if (command.includes('login')) {
-        specFiles.push('tests/login.spec.ts');
-        console.log(`${colors.green}✓ Spec file: tests/login.spec.ts${colors.reset}`);
+        specFiles.push('tests/UI/login.spec.ts');
+        console.log(`${colors.green}✓ Spec file: tests/UI/login.spec.ts${colors.reset}`);
     }
     if (command.includes('dashboard')) {
-        specFiles.push('tests/Dashboard.spec.ts');
-        console.log(`${colors.green}✓ Spec file: tests/Dashboard.spec.ts${colors.reset}`);
+        specFiles.push('tests/UI/Dashboard.spec.ts');
+        console.log(`${colors.green}✓ Spec file: tests/UI/Dashboard.spec.ts${colors.reset}`);
     }
     if (command.includes('transactions') || command.includes('transaction')) {
-        specFiles.push('tests/transactions.spec.ts');
-        console.log(`${colors.green}✓ Spec file: tests/transactions.spec.ts${colors.reset}`);
+        specFiles.push('tests/UI/transactions.spec.ts');
+        console.log(`${colors.green}✓ Spec file: tests/UI/transactions.spec.ts${colors.reset}`);
     }
 
     // If no specific spec mentioned but tags are present, search all specs

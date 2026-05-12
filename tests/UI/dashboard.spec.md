@@ -313,7 +313,7 @@ npm run dashboard:debug
 
 **Run specific test case:**
 ```bash
-npx playwright test tests/dashboard.spec.ts -g "TC01"
+npx playwright test tests/UI/dashboard.spec.ts -g "TC01"
 ```
 
 ### Test Hooks

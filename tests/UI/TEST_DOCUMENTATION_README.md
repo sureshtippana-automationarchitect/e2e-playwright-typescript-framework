@@ -123,7 +123,7 @@ Documents the transactions functionality test suite:
 #### Step 1: Identify Changes
 ```bash
 # Review your code changes
-git diff tests/login.spec.ts
+git diff tests/UI/login.spec.ts
 git diff test-data/login.json
 git diff pages/loginPage.ts
 ```
@@ -160,7 +160,7 @@ When JSON files change, update:
 #### Step 5: Commit Documentation with Code
 ```bash
 # Commit test code, test data, and documentation together
-git add tests/dashboard.spec.ts test-data/dashboard.json tests/dashboard.spec.md
+git add tests/UI/dashboard.spec.ts test-data/dashboard.json tests/UI/dashboard.spec.md
 git commit -m "feat: Add new account deletion test case (TC04) with @regression tag"
 ```
 
