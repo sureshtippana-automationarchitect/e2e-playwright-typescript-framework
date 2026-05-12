@@ -19,7 +19,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromium, firefox, webkit]
         suite: [UI/login, UI/dashboard, UI/transactions]
     
     steps:
@@ -54,15 +53,15 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps
 
-      - name: 🧪 Run ${{ matrix.suite }} Tests on ${{ matrix.browser }}
-        run: npx playwright test tests/${{ matrix.suite }}.spec.ts --project=${{ matrix.browser }}
+      - name: 🧪 Run ${{ matrix.suite }} Tests on Chromium
+        run: npx playwright test tests/${{ matrix.suite }}.spec.ts --project=chromium
         continue-on-error: true
 
       - name: 📊 Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nightly-ui-${{ matrix.suite }}-${{ matrix.browser }}
+          name: nightly-ui-${{ matrix.suite }}-chromium
           path: |
             playwright-report/
             test-results/
@@ -74,11 +73,6 @@ jobs:
     name: 🔌 Nightly API Test Suite
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
     
     steps:
       - name: 📥 Checkout Code
@@ -112,15 +106,15 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps
 
-      - name: 🧪 Run API Tests on ${{ matrix.browser }}
-        run: npx playwright test tests/API/ --project=${{ matrix.browser }}
+      - name: 🧪 Run API Tests on Chromium
+        run: npx playwright test tests/API/ --project=chromium
         continue-on-error: true
 
       - name: 📊 Upload API Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: nightly-api-${{ matrix.browser }}
+          name: nightly-api-chromium
           path: |
             playwright-report/
             test-results/

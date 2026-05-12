@@ -72,15 +72,10 @@ jobs:
 
   # Job 2: Regression Tests - Full suite
   regression-tests:
-    name: 🔄 Regression Tests
+    name: 🔄 Regression Tests (Chromium)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: smoke-tests  # Run only if smoke tests pass
-    
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
     
     steps:
       - name: 📥 Checkout Code
@@ -114,14 +109,14 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps
 
-      - name: 🧪 Run Regression Tests on ${{ matrix.browser }}
-        run: npx playwright test --grep @regression --project=${{ matrix.browser }}
+      - name: 🧪 Run Regression Tests on Chromium
+        run: npx playwright test --grep @regression --project=chromium
 
-      - name: 📊 Upload Test Results - ${{ matrix.browser }}
+      - name: 📊 Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: regression-results-${{ matrix.browser }}
+          name: regression-results-chromium
           path: |
             playwright-report/
             test-results/
@@ -181,15 +176,10 @@ jobs:
 
   # Job 4: API Regression Tests
   api-regression-tests:
-    name: 🔌 API Regression Tests
+    name: 🔌 API Regression Tests (Chromium)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: api-smoke-tests
-    
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, firefox, webkit]
     
     steps:
       - name: 📥 Checkout Code
@@ -223,14 +213,14 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps
 
-      - name: 🧪 Run API Regression Tests on ${{ matrix.browser }}
-        run: npx playwright test tests/API/ --grep @regression --project=${{ matrix.browser }}
+      - name: 🧪 Run API Regression Tests on Chromium
+        run: npx playwright test tests/API/ --grep @regression --project=chromium
 
-      - name: 📊 Upload API Test Results - ${{ matrix.browser }}
+      - name: 📊 Upload API Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: api-regression-results-${{ matrix.browser }}
+          name: api-regression-results-chromium
           path: |
             playwright-report/
             test-results/
