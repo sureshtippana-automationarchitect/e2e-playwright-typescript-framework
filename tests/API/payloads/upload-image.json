@@ -1,0 +1,6 @@
+{
+  "petId": 1,
+  "additionalMetadata": "Test image upload from automation",
+  "fileName": "test-pet-image.png",
+  "mimeType": "image/png"
+}
