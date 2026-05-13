@@ -8,10 +8,10 @@
 import { test as traditionalTest } from '@playwright/test';
 import { test, expect } from '../../fixtures/baseFixtures';
 import { getBankURL } from '../../config/environmentManager';
-import loginData from '../test-data/login.json';
-import dashboardData from '../test-data/dashboard.json';
-import LoginPage from '../pages/loginPage';
-import DashboardPage from '../pages/dashboardPage';
+import loginData from '../../test-data/login.json';
+import dashboardData from '../../test-data/dashboard.json';
+import LoginPage from '../../pages/loginPage';
+import DashboardPage from '../../pages/dashboardPage';
 
 // ============================================================================
 // TRADITIONAL APPROACH (What you currently have)
